@@ -1,8 +1,11 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import Toggleable from './Toggleable'
 import blogService from '../services/blogs'
+import { changeNotification } from '../reducers/notificationReducer'
 
 const Blog = (props) => {
+  const dispatch = useDispatch()
   const [blogLikes, setBlogLikes] = useState(props.blog.likes)
 
   const like = async () => {
@@ -11,24 +14,24 @@ const Blog = (props) => {
     await blogService.update(likedBlog.id, likedBlog)
     setBlogLikes(blogLikes + 1)
     props.sortBlogs()
+    const message = `Liked blog: ${props.blog.title}`
+    const messageType = 'success'
+    dispatch(changeNotification(message, messageType))
   }
 
   const deleteBlog = async (blog) => {
     if (window.confirm(`Remove ${blog.title}?`)) {
       try {
         await blogService.remove(blog.id, props.user.token)
-        props.setSuccessMessage(`Successfully removed ${blog.title}!`)
-        setTimeout(() => {
-          props.setSuccessMessage(null)
-        }, 3000)
+        const message =`Successfully removed ${blog.title}!`
+        const messageType = 'success'
+        dispatch(changeNotification(message, messageType))
         props.sortBlogs()
         props.removeBlog(blog)
       } catch(exception) {
-        props.setErrorMessage('There was a problem adding your blog. Try logging out and back in')
-        setTimeout(() => {
-          props.setErrorMessage(null)
-        }, 3000)
-
+        const message = 'There was a problem adding your blog. Try logging out and back in'
+        const messageType = 'error'
+        dispatch(changeNotification(message, messageType))
       }
     }
   }

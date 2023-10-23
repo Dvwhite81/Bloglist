@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import AllBlogs from './components/AllBlogs'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -6,11 +7,11 @@ import Notification from './components/Notification'
 import Toggleable from './components/Toggleable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { changeNotification } from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
-  const [successMessage, setSuccessMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -48,15 +49,13 @@ const App = () => {
       setUsername('')
       setPassword('')
       setContainerDisplay('one-column')
-      setSuccessMessage(`Logged in ${username}!`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 3000)
+      const message = `Logged in ${username}!`
+      const messageType = 'success'
+      dispatch(changeNotification(message, messageType))
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
+      const message = 'Wrong credentials'
+      const messageType = 'error'
+      dispatch(changeNotification(message, messageType))
     }
   }
 
@@ -64,6 +63,9 @@ const App = () => {
     event.preventDefault()
 
     window.localStorage.removeItem('loggedBlogAppUser')
+    const message = `Logged out ${user.username}`
+    const messageType = 'success'
+    dispatch(changeNotification(message, messageType))
     setUser(null)
   }
 
@@ -75,23 +77,20 @@ const App = () => {
       const newBlog = await blogService.create(blog)
       newBlog.user = user
       setBlogs(blogs.concat(newBlog))
-      setSuccessMessage(`Added your blog: ${blog.title}!`)
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 3000)
+      const message = `Added your blog: ${blog.title}!`
+      const messageType = 'success'
+      dispatch(changeNotification(message, messageType))
     } catch (exception) {
-      setErrorMessage('There was a problem adding your blog. Try logging out and back in')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
+      const message = 'There was a problem adding your blog. Try logging out and back in'
+      const messageType = 'error'
+      dispatch(changeNotification(message, messageType))
     }
   }
 
   return (
     <div className="main-container">
       <h2>Blog App</h2>
-      <Notification message={successMessage} type="success" />
-      <Notification message={errorMessage} type="error" />
+      <Notification />
       {user === null ? (
         <div className="logged-out-container">
           <LoginForm
@@ -121,7 +120,7 @@ const App = () => {
             <BlogForm addBlog={addBlog} />
           </Toggleable>
           <div className="blogs-container">
-            <AllBlogs blogs={blogs} user={user} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} />
+            <AllBlogs blogs={blogs} user={user} />
           </div>
         </div>
       )}
