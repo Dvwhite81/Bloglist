@@ -8,22 +8,18 @@ import Toggleable from './components/Toggleable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import { changeNotification } from './reducers/notificationReducer'
+import { initialBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [containerDisplay, setContainerDisplay] = useState('one-column')
 
   useEffect(() => {
-    const fetchData = async () => {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
-    }
-    fetchData()
-  }, [])
+    dispatch(initialBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -71,22 +67,6 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const addBlog = async (blog) => {
-    try {
-      blogFormRef.current.toggleVisibility()
-      const newBlog = await blogService.create(blog)
-      newBlog.user = user
-      setBlogs(blogs.concat(newBlog))
-      const message = `Added your blog: ${blog.title}!`
-      const messageType = 'success'
-      dispatch(changeNotification(message, messageType))
-    } catch (exception) {
-      const message = 'There was a problem adding your blog. Try logging out and back in'
-      const messageType = 'error'
-      dispatch(changeNotification(message, messageType))
-    }
-  }
-
   return (
     <div className="main-container">
       <h2>Blog App</h2>
@@ -117,10 +97,10 @@ const App = () => {
             buttonId="new-blog-btn"
             ref={blogFormRef}
           >
-            <BlogForm addBlog={addBlog} />
+            <BlogForm user={user} innerRef={blogFormRef} />
           </Toggleable>
           <div className="blogs-container">
-            <AllBlogs blogs={blogs} user={user} />
+            <AllBlogs user={user} />
           </div>
         </div>
       )}

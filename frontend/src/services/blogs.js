@@ -21,14 +21,14 @@ const create = async newObject => {
   return response.data
 }
 
-const update = async (id, newObject) => {
-  const response = await axios.put(`${baseUrl}/${id}`, newObject)
+const update = async (blog) => {
+  const id = blog.id
+  const object = { ...blog, likes: blog.likes + 1 }
+  const response = await axios.put(`${baseUrl}/${id}`, object)
   return response.data
 }
 
-const remove = async (id, userToken) => {
-  setToken(userToken)
-
+const remove = async (id) => {
   const config = {
     headers: { Authorization: token }
   }
