@@ -5,9 +5,9 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Toggleable from './components/Toggleable'
-import { changeNotification } from './reducers/notificationReducer'
+import AllUsersView from './components/AllUsersView'
 import { initialBlogs } from './reducers/blogReducer'
-import { setCurrentUser, userLogout } from './reducers/userReducer'
+import { setCurrentUser, userLogout } from './reducers/loginReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const App = () => {
     }
   }, [dispatch])
 
-  const user = useSelector(state => state.user)
+  const loggedInUser = useSelector(state => state.loggedInUser)
 
   const handleLogout = () => {
     dispatch(userLogout())
@@ -37,14 +37,14 @@ const App = () => {
     <div className="main-container">
       <h2>Blog App</h2>
       <Notification />
-      {user === null ? (
+      {loggedInUser === null ? (
         <div className="logged-out-container">
           <LoginForm />
         </div>
       ) : (
         <div className={`logged-in-container ${containerDisplay}`}>
           <div className="user-logged-in">
-            {user.username} logged in
+            {loggedInUser.username} logged in
             <button onClick={handleLogout}>Log Out</button>
           </div>
           <Toggleable
@@ -57,11 +57,10 @@ const App = () => {
             buttonId="new-blog-btn"
             ref={blogFormRef}
           >
-            <BlogForm user={user} innerRef={blogFormRef} />
+            <BlogForm user={loggedInUser} innerRef={blogFormRef} />
           </Toggleable>
-          <div className="blogs-container">
-            <AllBlogs user={user} />
-          </div>
+          <AllBlogs user={loggedInUser} />
+          <AllUsersView />
         </div>
       )}
     </div>

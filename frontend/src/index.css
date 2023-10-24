@@ -72,7 +72,7 @@ body {
   background-color: antiquewhite;
   font-weight: normal;
   grid-row: 2;
-  height: 60vh;
+  height: 30vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -176,6 +176,19 @@ button {
 button:hover {
   background-color: #000;
   color: #f9f9f9;
+}
+
+.all-users-container {
+  display: grid;
+  grid-column: 1 / 3;
+  grid-row: 3;
+  text-align: center;
+}
+
+.all-users-list {
+  height: 20vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 @media screen and (min-width: 800px) {

@@ -9,7 +9,7 @@ if (userJSON) {
   blogService.setToken(initialUser.token)
 }
 
-const userReducer = (state = initialUser, action) => {
+const loginReducer = (state = initialUser, action) => {
   switch (action.type) {
   case 'INITIALIZE_USER':
   case 'SET_USER':
@@ -66,4 +66,4 @@ export const setCurrentUser = (user) => {
   }
 }
 
-export default userReducer
+export default loginReducer
