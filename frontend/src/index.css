@@ -30,27 +30,37 @@ body {
 }
 
 .logged-in-container {
-  display: grid;
+  align-items: center;
+  display: flex;
   gap: 1rem;
-  grid-template-columns: 1fr 1fr;
-  padding-top: 2rem;
-  width: 80vw;
+  height: 80vh;
+  justify-content: center;
+  margin-top: 5vh;
+  width: 90vw;
+}
+
+.routes-container {
+  height: 100%;
+  width: 90vw;
 }
 
 .one-column {
+  align-items: center;
   display: flex;
   flex-direction: column;
+  width: 80vw;
 }
 
 .two-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  gap: 1rem;
+  width: 80vw;
 }
 
 .toggle-display-button {
   left: 50%;
   position: absolute;
-  top: 4rem;
+  top: 3.5rem;
   transform: translate(-50%);
 }
 
@@ -64,17 +74,13 @@ body {
   width: fit-content;
 }
 
-.blog-form-container {
-  grid-row: 2;
-}
-
 .blogs-container {
   background-color: antiquewhite;
   font-weight: normal;
-  grid-row: 2;
-  height: 30vh;
+  height: 80%;
   overflow-x: hidden;
   overflow-y: scroll;
+  width: 100%;
 }
 
 .single-blog {
@@ -116,7 +122,6 @@ form {
   display: flex;
   flex-direction: column;
   justify-items: center;
-  width: 60%;
 }
 
 form div {
@@ -179,15 +184,62 @@ button:hover {
 }
 
 .all-users-container {
+  background-color: antiquewhite;
   display: grid;
-  grid-column: 1 / 3;
-  grid-row: 3;
   text-align: center;
+  width: 100%;
 }
 
 .all-users-list {
   height: 20vh;
   overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+th {
+  font-size: larger;
+  text-decoration: underline;
+}
+
+#nav-menu {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  left: 0.5rem;
+  padding: 0.5rem;
+  position: absolute;
+  top: 0.5rem;
+  width: fit-content;
+}
+
+a {
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+a:hover {
+  color: cornflowerblue;
+}
+
+.single-view {
+  background-color: antiquewhite;
+  font-weight: normal;
+  max-height: 80vh;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.single-view .likes-container {
+  margin: 0;
+}
+
+.single-view p {
+  margin: 0;
+}
+
+.comments-list {
+  max-height: 20vh;
   overflow-y: scroll;
 }
 

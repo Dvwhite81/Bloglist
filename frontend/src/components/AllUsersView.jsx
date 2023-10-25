@@ -1,12 +1,13 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getInitialUsers } from '../reducers/allUsersReducer'
+import { Link } from 'react-router-dom'
+import { getAllUsers } from '../reducers/allUsersReducer'
 
 const AllUsersView = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getInitialUsers())
+    dispatch(getAllUsers())
   }, [dispatch])
 
   const allUsers = useSelector(state => state.allUsers)
@@ -24,7 +25,7 @@ const AllUsersView = () => {
         <tbody className='all-users-list'>
           {allUsers.map(user =>
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
               <td>{user.blogs.length}</td>
             </tr>
           )}

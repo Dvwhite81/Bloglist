@@ -1,22 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit'
 import allUsersService from '../services/allUsers'
 
-const allUsersSlice = createSlice({
-  name: 'allUsers',
-  initialState: [],
-  reducers: {
-    setAllUsers(state, action) {
-      return action.payload
-    }
-  }
-})
-
-export const getInitialUsers = () => {
-  return async (dispatch) => {
-    const allUsers = await allUsersService.getAll()
-    dispatch(setAllUsers(allUsers))
+const allUsersReducer = (state = [], action) => {
+  switch (action.type) {
+  case 'ALL_USERS':
+    return action.payload
+  default:
+    return state
   }
 }
 
-export const { setAllUsers } = allUsersSlice.actions
-export default allUsersSlice.reducer
+export const getAllUsers = () => {
+  return async (dispatch) => {
+    const allUsers = await allUsersService.getAll()
+    dispatch({
+      type: 'ALL_USERS',
+      payload: allUsers
+    })
+    return allUsers
+  }
+}
+
+export default allUsersReducer

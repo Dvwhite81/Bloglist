@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import Toggleable from './Toggleable'
 import { changeNotification } from '../reducers/notificationReducer'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
@@ -33,7 +34,9 @@ const Blog = (props) => {
   return (
     <div className='single-blog'>
       <div className='word-wrap'>
-        <strong>{props.blog.title}</strong> by <em>{props.blog.author}</em>
+        <Link to={`/blogs/${props.id}`}>
+          <strong>{props.blog.title}</strong> by <em>{props.blog.author}</em>
+        </Link>
       </div>
       <Toggleable
         type={'null'}
